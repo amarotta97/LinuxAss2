@@ -12,6 +12,7 @@ for files in * Quit; do
         echo "${COUNTER}. ${files}";
 done
 
+
 # Function to return the menu of selected LED.
 function secondmenu(){
         echo "===================="
@@ -26,6 +27,34 @@ function secondmenu(){
 
         secondcase
 }
+
+# Function for the second case to select what to do with the selected LED.
+function secondcase(){
+        read INPUT
+                case $INPUT in
+                        1)
+				cwd=$(pwd)
+				echo $cwd/brightness
+                                echo 1 | sudo tee $cwd/brightness
+                                ;;
+                        2)
+				cwd=$(pwd)
+				echo $cwd/brightness
+                                echo 0 | sudo tee $cwd/brightness
+                                ;;
+                        3)
+                                echo "3"
+                                ;;
+                        4)
+                                echo "4"
+                                ;;
+                        5)
+                                echo "5"
+                                ;;
+                        6)
+                                echo "Return to main menu"
+                esac
+        }
 
 echo "Please enter a number (1-6) for the led to configure or quit: "
 echo
