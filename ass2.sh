@@ -5,14 +5,6 @@ echo "============================ "
 echo "Please select an led to configure: "
 echo
 
-# For loop to return the directories within the leds directory.
-cd /sys/class/leds
-for files in * Quit; do
-        COUNTER=$(expr $COUNTER + 1)
-        echo "${COUNTER}. ${files}";
-done
-
-
 # Function to return the menu of selected LED.
 function secondmenu(){
         echo "===================="
@@ -28,22 +20,24 @@ function secondmenu(){
         secondcase
 }
 
+
 # Function for the second case to select what to do with the selected LED.
 function secondcase(){
         read INPUT
                 case $INPUT in
                         1)
-				cwd=$(pwd)
-				echo $cwd/brightness
+                                cwd=$(pwd)
+                                echo $cwd/brightness
                                 echo 1 | sudo tee $cwd/brightness
                                 ;;
                         2)
-				cwd=$(pwd)
-				echo $cwd/brightness
+                                cwd=$(pwd)
+                                echo $cwd/brightness
                                 echo 0 | sudo tee $cwd/brightness
                                 ;;
                         3)
                                 echo "3"
+                                triggermenu
                                 ;;
                         4)
                                 echo "4"
@@ -56,42 +50,48 @@ function secondcase(){
                 esac
         }
 
-echo "Please enter a number (1-6) for the led to configure or quit: "
-echo
-read NUM
+# Function that will generate menu from the directories in required folder: Requirement 2
+function generateMenu(){
+# Select statement, dynamic so that it will change directories into the selected option, from the generated menu
+        cd /sys/class/leds
+        COLUMNS=+1
+        select files in * Quit;
 
-# Case statement to select which LED user will be using.
-        case $NUM in
-                1)
-                        cd /sys/class/leds/input0::capslock
-                        printf '%q\n' "${PWD##*/}"
-                        secondmenu
-                        ;;
-                2)
-                        cd /sys/class/leds/input0::numlock
-                        printf '%q\n' "${PWD##*/}"
-                        secondmenu
-                        ;;
-                3)
-                        cd /sys/class/leds/input0::scrolllock
-                        printf '%q\n' "${PWD##*/}"
-                        secondmenu
-                        ;;
-                4)
-                        cd /sys/class/leds/led0
-                        printf '%q\n' "${PWD##*/}"
-                        secondmenu
-                        ;;
-                5)
-                        cd /sys/class/leds/led1
-                        printf '%q\n' "${PWD##*/}"
-                        secondmenu
-                        ;;
-                6)
-                        ;;
-                *)
-                        echo "Invalid option!"
-                        ;;
+        # Case statement to select which LED user will be using.
+        do
+                case $files in
+                        *)
+                                cd "$files"
+                                echo
+                                printf '%q\n' "${PWD##*/}"
+                                secondmenu
+                                ;;
+                esac
+        done
 
-        esac
+        echo "Please enter a number (1-6) for the led to configure or quit: "
+        echo
+
+}
+
+# Function to associate LED with a system event (Requirement 5)
+function triggermenu(){
+        echo "Associate Led with a system Event"
+        echo "===================================="
+        echo "Available events are: "
+        echo "----------------"
+
+        cwd=$(pwd)
+        select event in $(cat $cwd/trigger) "Quit to previous menu";
+
+        do
+                case $event in
+                        *)
+                                echo $event | sudo tee $cwd/trigger
+                                ;;
+                esac
+        done
+}
+
+generateMenu
 
