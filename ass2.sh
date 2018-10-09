@@ -32,14 +32,12 @@ function secondCase(){
                         1)
 				# 1st option: turn ON the LED in that working directory
                                 cwd=$(pwd)
-                                echo $cwd/brightness
-                                echo 1 | sudo tee $cwd/brightness
+                                echo 1 | sudo tee $cwd/brightness > /dev/null
                                 ;;
                         2)
 				# 2nd option: turn OFF the LED in that working directory
                                 cwd=$(pwd)
-                                echo $cwd/brightness
-                                echo 0 | sudo tee $cwd/brightness
+                                echo 0 | sudo tee $cwd/brightness > /dev/null
                                 ;;
                         3)
 				# 3rd option: Will call the trigger event associated with the selected LED
@@ -56,7 +54,9 @@ function secondCase(){
                                 ;;
                         6)
 				# 6th option should return user to main menu (mainMenu)
+				mainMenu
                                 echo "Return to main menu"
+				;;
                 esac
         }
 
@@ -73,6 +73,10 @@ function mainMenu(){
         # Case statement to select which LED user will be using, which will then print the secondMenu for user.
         do
                 case $files in
+			"Quit")
+				echo "Exitting."
+				break
+				;;
                         *)
                                 cd "$files"
                                 echo
@@ -103,13 +107,16 @@ function triggerMenu(){
 
 	# Case statement which will select the event from user input
 	# and echo it into the trigger file of the current working directory
-        do
+	do
                 case $event in
-                        *)
-                                echo $event | sudo tee $cwd/trigger
+			"Quit to previous menu")
+				secondMenu
+				;; 
+	              	*)
+                               	echo $event | sudo tee $cwd/trigger
                                 ;;
-                esac
-        done
+		esac
+	done
 }
 
 mainMenu

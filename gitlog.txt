@@ -1,0 +1,29 @@
+commit b91625f6f5efd6bc34880535cb2616ebc513ecc1
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Tue Oct 9 18:42:17 2018 +1100
+
+    Added documentation to current code
+
+commit 671d1dda08d2dd27219c36f36b1ab0f0bea32ca4
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Tue Oct 9 18:19:31 2018 +1100
+
+    Restructured code to select statements to minimize amount of code, added Task 5
+
+commit 00df4087e7f0a510c61e5f330af7e2cdd9a6326c
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Mon Oct 8 16:55:45 2018 +1100
+
+    Requirement 4 turn on and off the LED
+
+commit bd028c5854325c6f1779f1c459f0f22e4b6627f5
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Mon Oct 8 16:08:55 2018 +1100
+
+    Requirement 3, LED manipulation menu added
+
+commit 338542cd875d73b6d477cbd80ededa6ca6dbf456
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Mon Oct 8 16:00:05 2018 +1100
+
+    Task 2 Script Launch complete
