@@ -19,6 +19,8 @@ function secondMenu(){
         echo "6) quit to main menu"
         echo "Please enter a number (1-6) for your choice: "
         echo
+
+	# While loop to stay within the menu after execution of user selected operation 
 	while true; do
         	secondCase
 	done
@@ -28,6 +30,7 @@ function secondMenu(){
 # The expected outcome of this menu is to complete the option that has been selected by the user.
 # This will complete the tasks for the selected LED, which is associated with the function (secondMenu)
 function secondCase(){
+	# read the user input to use for case statement
         read INPUT
                 case $INPUT in
                         1)
@@ -44,9 +47,10 @@ function secondCase(){
                                 ;;
                         3)
 				# 3rd option: Will call the trigger event associated with the selected LED
-                                echo "3"
-                                triggerMenu 
-                                ;;
+                                while true; do
+	                                triggerMenu
+        			done
+	                        ;;
                         4)
 				# Work in progress
                                 echo "4"
@@ -58,7 +62,6 @@ function secondCase(){
                         6)
 				# 6th option should return user to main menu (mainMenu)
 				mainMenu
-                                echo "Return to main menu"
 				;;
                 esac
 	}
@@ -71,7 +74,9 @@ function mainMenu(){
 # Select statement, dynamic so that it will change directories into the selected option, from the generated menu
         cd /sys/class/leds
         COLUMNS=+1
-	PS3="Please enter a number (1-6) for the led to configure or quit: "
+
+	# PS3 will be the statement that displays what the user should do at the given menu
+	PS3="Please enter a number that corresponds to the LED to configure or quit: "
 
         select files in * Quit;
         # Case statement to select which LED user will be using, which will then print the secondMenu for user.
@@ -80,7 +85,6 @@ function mainMenu(){
 
 			"Quit")
 				echo "Exitting."
-				break
 				;;
                         *)
                                 cd "$files"
@@ -90,6 +94,7 @@ function mainMenu(){
                                 ;;
                 esac
         done
+
 
 }
 
@@ -103,6 +108,8 @@ function triggerMenu(){
         echo "Available events are: "
         echo "----------------"
 
+	PS3="Please select an option (1-33):"
+
 	# Select which will print the events that are allowed by the trigger file from the current working directory
         cwd=$(pwd)
         select event in $(cat $cwd/trigger) "Quit to previous menu";
@@ -111,8 +118,13 @@ function triggerMenu(){
 	# and echo it into the trigger file of the current working directory
 	do
                 case $event in
-	              	*)
+			"Quit to previous menu")
+				echo "Returning to previous menu."
+				secondMenu
+				;;
+	              	**)
                                	echo $event | sudo tee $cwd/trigger
+				triggerMenu
                                 ;;
 		esac
 	done
