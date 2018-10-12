@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Code to disable the CTRL+C way to exit the program.
-#trap '' 2
+trap '' 2
 
 # Opening preview of what the user will be greeted upon opening the program.
 echo "Welcome to Led_Konfigurator! "
@@ -64,8 +64,9 @@ function secondCase(){
                                 task6
                                 ;;
                         5)
-				# Work in progress
-                                echo "5"
+				# Task 7, kills the background process that was created by task 6
+                                task7
+				mainMenu
                                 ;;
                         6)
 				# 6th option should return user to main menu (mainMenu)
@@ -91,11 +92,12 @@ function mainMenu(){
         # Case statement to select which LED user will be using, which will then print the secondMenu for user.
         do
                 case $files in
-
+			#If a user selects the Quit option, the program will exit.
 			"Quit")
 				echo "Exitting."
 				exit
 				;;
+			# Based on the selection of the user, the program will change directory to the option selected and then print the current directory at the top
                         *)
                                 cd "$files"
                                 echo
@@ -150,10 +152,13 @@ function task6(){
 	read process
 	COUNTER=0
 
+	# For loop will print the processes based on the input from the user, defined as process.
+	# It will also add a counter to it to track the amount of results
         for results in $(ps -C $process -o comm=); do
         	COUNTER=$(expr $COUNTER + 1)
         done
 
+	# If statements, it will separate whether there are multiple results of the specified process or not.
 	if [ $COUNTER -gt 1 ]
 	then
 		echo
@@ -180,6 +185,7 @@ function task6(){
                        			read monitor
 		                        if [ $monitor == "cpu" ]
                         		then
+						echo ${monitor}
 						cd /root/ass2/
 						exec ./psscript.sh &
 						cd ${cwd}
@@ -197,12 +203,18 @@ function task6(){
 					;;
 			esac
 		done
+	# Else if there is not more than one process with that defined name, execute this following code
 	else
 		cwd=$(pwd)
 		echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
 		read monitor
 		if [ $monitor == "cpu" ]
 		then
+			# Change directory to the path where script is located
+			# Run the script in the background
+			# Then switch back to the previously stored directory (that of menu 2) as part of the requirement
+			# Finally re-display the options for menu 2.
+			# This documentation is the same for if the user enters memory as the monitoring
                 	cd /root/ass2/
                         exec ./psscript.sh &
                         cd ${cwd}
@@ -221,5 +233,12 @@ function task6(){
 
 }
 
+# Function for task 7
+# This will kill the background process in which was created via task 6
+function task7(){
+	pkill -f psscript.sh
+}
+
+# This will run the mainMenu, running the program
 mainMenu
 
