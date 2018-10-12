@@ -19,8 +19,9 @@ function secondMenu(){
         echo "6) quit to main menu"
         echo "Please enter a number (1-6) for your choice: "
         echo
-
-        secondCase
+	while true; do
+        	secondCase
+	done
 }
 
 # Function for the second case to select what to do with the selected LED.
@@ -33,16 +34,18 @@ function secondCase(){
 				# 1st option: turn ON the LED in that working directory
                                 cwd=$(pwd)
                                 echo 1 | sudo tee $cwd/brightness > /dev/null
+				secondMenu
                                 ;;
                         2)
 				# 2nd option: turn OFF the LED in that working directory
                                 cwd=$(pwd)
                                 echo 0 | sudo tee $cwd/brightness > /dev/null
+				secondMenu
                                 ;;
                         3)
 				# 3rd option: Will call the trigger event associated with the selected LED
                                 echo "3"
-                                triggerMenu
+                                triggerMenu 
                                 ;;
                         4)
 				# Work in progress
@@ -58,7 +61,7 @@ function secondCase(){
                                 echo "Return to main menu"
 				;;
                 esac
-        }
+	}
 
 # Function that will generate menu from the directories in required folder: Requirement 2
 # That required folder being: /sys/class/leds
@@ -68,11 +71,13 @@ function mainMenu(){
 # Select statement, dynamic so that it will change directories into the selected option, from the generated menu
         cd /sys/class/leds
         COLUMNS=+1
-        select files in * Quit;
+	PS3="Please enter a number (1-6) for the led to configure or quit: "
 
+        select files in * Quit;
         # Case statement to select which LED user will be using, which will then print the secondMenu for user.
         do
                 case $files in
+
 			"Quit")
 				echo "Exitting."
 				break
@@ -85,9 +90,6 @@ function mainMenu(){
                                 ;;
                 esac
         done
-
-        echo "Please enter a number (1-6) for the led to configure or quit: "
-        echo
 
 }
 
@@ -109,9 +111,6 @@ function triggerMenu(){
 	# and echo it into the trigger file of the current working directory
 	do
                 case $event in
-			"Quit to previous menu")
-				secondMenu
-				;; 
 	              	*)
                                	echo $event | sudo tee $cwd/trigger
                                 ;;
