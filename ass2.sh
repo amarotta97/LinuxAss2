@@ -27,7 +27,7 @@ function secondMenu(){
 
 	# While loop to stay within the menu after execution of user selected operation 
 	while true; do
-        	secondCase
+		secondCase
 	done
 }
 
@@ -56,7 +56,7 @@ function secondCase(){
                         3)
 				# 3rd option: Will call the trigger event associated with the selected LED
                                 while true; do
-	                                triggerMenu
+	                        	triggerMenu
         			done
 	                        ;;
                         4)
@@ -154,52 +154,71 @@ function task6(){
         	COUNTER=$(expr $COUNTER + 1)
         done
 
-#	select process in $(ps -C $process -o comm=) "Cancel Request";
-
 	if [ $COUNTER -gt 1 ]
-		then
-			echo "Name Conflict"
-			echo "-------------"
-			echo "I have detected a name conflict. Do you want to monitor: "
-			for results in $(ps -C $process -o comm=) "Cancel request"; do
-                		NEWCOUNTER=$(expr $NEWCOUNTER + 1)
-                		echo "${NEWCOUNTER}) ${results}";
-		        done
+	then
+		echo
+		echo "Name Conflict"
+		echo "-------------"
+		echo "I have detected a name conflict. Do you want to monitor: "
+		for results in $(ps -C $process -o comm=) "Cancel request"; do
+               		NEWCOUNTER=$(expr $NEWCOUNTER + 1)
+               		echo "${NEWCOUNTER}) ${results}";
+	        done
 
+		PS3="Please select an option: "
+
+		select monitor in $results
+
+		do
+			case $monitor in
+				"Cancel request")
+					mainMenu
+					;;
+				*)
+					cwd=$(pwd)
+					echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
+                       			read monitor
+		                        if [ $monitor == "cpu" ]
+                        		then
+						cd /root/ass2/
+						exec ./psscript.sh &
+						cd ${cwd}
+						secondMenu
+                       			elif [ $monitor == "memory" ]
+                       			then
+						cd /root/ass2/
+						exec ./psscript.sh &
+						cd ${cwd}
+						secondMenu
+					else
+               	                		echo "Error please try again."
+						secondMenu
+					fi
+					;;
+			esac
+		done
+	else
+		cwd=$(pwd)
+		echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
+		read monitor
+		if [ $monitor == "cpu" ]
+		then
+                	cd /root/ass2/
+                        exec ./psscript.sh &
+                        cd ${cwd}
+                        secondMenu
+		elif [ $monitor == "memory" ]
+		then
+                        cd /root/ass2/
+                        exec ./psscript.sh &
+                        cd ${cwd}
+                        secondMenu
 		else
-			echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
-			read monitor
-			if [ $monitor == "cpu" ]
-			then
-				echo "cpu"
-			elif [ $monitor == "memory" ]
-			then
-				echo "memory"
-			else
-				echo "error"
-			fi
+			echo "Error please try again."
+			secondMenu
+		fi
 	fi
 
-
-
-		        #echo "Process: "${process}" Monitoring: "${monitor}""
-#
-#			do
-#                		case $process in
-#
-#					"Cancel Request")
-#						mainMenu
-#						;;
-#		                        *)
-#						monitor
-#                               		;;
-#       	       		esac
-#	     		done
-#	fi
-#	echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
-#	read monitor
-
-#	echo "Process: "${process}" Monitoring: "${monitor}""
 }
 
 mainMenu
