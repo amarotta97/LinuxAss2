@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Code to disable the CTRL+C way to exit the program.
+#trap '' 2
+
+# Opening preview of what the user will be greeted upon opening the program.
 echo "Welcome to Led_Konfigurator! "
 echo "============================ "
 echo "Please select an led to configure: "
@@ -90,6 +94,7 @@ function mainMenu(){
 
 			"Quit")
 				echo "Exitting."
+				exit
 				;;
                         *)
                                 cd "$files"
@@ -128,7 +133,7 @@ function triggerMenu(){
 				echo "Returning to previous menu."
 				secondMenu
 				;;
-	              	**)
+	              	*)
                                	echo $event | sudo tee $cwd/trigger
 				triggerMenu
                                 ;;
@@ -142,7 +147,59 @@ function task6(){
 	echo "-----------------------------------"
 	echo "Please enter the name of the program to monitor (partial names are ok): "
 
-	
+	read process
+	COUNTER=0
+
+        for results in $(ps -C $process -o comm=); do
+        	COUNTER=$(expr $COUNTER + 1)
+        done
+
+#	select process in $(ps -C $process -o comm=) "Cancel Request";
+
+	if [ $COUNTER -gt 1 ]
+		then
+			echo "Name Conflict"
+			echo "-------------"
+			echo "I have detected a name conflict. Do you want to monitor: "
+			for results in $(ps -C $process -o comm=) "Cancel request"; do
+                		NEWCOUNTER=$(expr $NEWCOUNTER + 1)
+                		echo "${NEWCOUNTER}) ${results}";
+		        done
+
+		else
+			echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
+			read monitor
+			if [ $monitor == "cpu" ]
+			then
+				echo "cpu"
+			elif [ $monitor == "memory" ]
+			then
+				echo "memory"
+			else
+				echo "error"
+			fi
+	fi
+
+
+
+		        #echo "Process: "${process}" Monitoring: "${monitor}""
+#
+#			do
+#                		case $process in
+#
+#					"Cancel Request")
+#						mainMenu
+#						;;
+#		                        *)
+#						monitor
+#                               		;;
+#       	       		esac
+#	     		done
+#	fi
+#	echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
+#	read monitor
+
+#	echo "Process: "${process}" Monitoring: "${monitor}""
 }
 
 mainMenu
