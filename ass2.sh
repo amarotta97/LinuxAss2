@@ -5,6 +5,7 @@ echo "============================ "
 echo "Please select an led to configure: "
 echo
 
+# *** Task 3 Menu
 # Function to return the menu of selected LED.
 # To be generated after user selects which LED they will use from the previous menu (mainMenu)
 # The expected outcome of this function is that it will display the options that are defined here, and once a user
@@ -26,6 +27,7 @@ function secondMenu(){
 	done
 }
 
+# *** Task 3 Case
 # Function for the second case to select what to do with the selected LED.
 # The expected outcome of this menu is to complete the option that has been selected by the user.
 # This will complete the tasks for the selected LED, which is associated with the function (secondMenu)
@@ -34,12 +36,14 @@ function secondCase(){
         read INPUT
                 case $INPUT in
                         1)
+				# *** Task 4
 				# 1st option: turn ON the LED in that working directory
                                 cwd=$(pwd)
                                 echo 1 | sudo tee $cwd/brightness > /dev/null
 				secondMenu
                                 ;;
                         2)
+				# *** Task 4
 				# 2nd option: turn OFF the LED in that working directory
                                 cwd=$(pwd)
                                 echo 0 | sudo tee $cwd/brightness > /dev/null
@@ -53,7 +57,7 @@ function secondCase(){
 	                        ;;
                         4)
 				# Work in progress
-                                echo "4"
+                                task6
                                 ;;
                         5)
 				# Work in progress
@@ -66,6 +70,7 @@ function secondCase(){
                 esac
 	}
 
+# *** Task 2
 # Function that will generate menu from the directories in required folder: Requirement 2
 # That required folder being: /sys/class/leds
 # The expectation of this menu is that the user can select which LED they would like to use,
@@ -98,6 +103,7 @@ function mainMenu(){
 
 }
 
+# ***Task 5
 # Function to associate LED with a system event (Requirement 5)
 # Expected result of this function is that it will print the events from the trigger file using cat command
 # The function will then read the event that is produced by the menu that the user selects, and echo that
@@ -128,6 +134,15 @@ function triggerMenu(){
                                 ;;
 		esac
 	done
+}
+
+# Task 6
+function task6(){
+	echo "Associated LED with the performance of a process"
+	echo "-----------------------------------"
+	echo "Please enter the name of the program to monitor (partial names are ok): "
+
+	
 }
 
 mainMenu
