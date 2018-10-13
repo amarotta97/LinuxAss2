@@ -1,3 +1,45 @@
+commit ab380e04745e0ca4e077cc77ee017c7879184451
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 23:31:14 2018 +1100
+
+    Progress on task 6, not complete, task 7 complete
+
+commit 0c1d02a09980d8e1b0beed4d6655551eb3a2e58b
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 23:00:19 2018 +1100
+
+    Updated, able to spawn background script from function
+
+commit c2654626256326cf6bc39a6dc94617ad9c22e13a
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 22:06:08 2018 +1100
+
+    Work in progress for task 6
+
+commit 6bbd07bb1ef71a66404a2ea03ac307d8b25d5d70
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 19:46:29 2018 +1100
+
+    Add task 6 menu
+
+commit d8e4df64b179bb6bc4c6d4a290898b1dbfc2e71f
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 19:02:59 2018 +1100
+
+    fixed menu quitting
+
+commit 4c64bef6208ec8e8dbb74f957e5fd871ad84a24a
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Fri Oct 12 18:34:32 2018 +1100
+
+    Fixed some bugs and format errors
+
+commit 43eb27ca401c2fa8de3261c345efa5880d30916a
+Author: amarotta97 <a.marotta97@gmail.com>
+Date:   Tue Oct 9 20:29:49 2018 +1100
+
+    Added quitting options
+
 commit b91625f6f5efd6bc34880535cb2616ebc513ecc1
 Author: amarotta97 <a.marotta97@gmail.com>
 Date:   Tue Oct 9 18:42:17 2018 +1100

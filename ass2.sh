@@ -171,32 +171,41 @@ function task6(){
 	        done
 
 		PS3="Please select an option: "
-
+		# Select loop to return the process name of the input via a user
 		select monitor in $results
 
 		do
+			# Case statement so that a user can select to either cancel to main menu
+			# Or select to monitor cpu or memory
 			case $monitor in
 				"Cancel request")
 					mainMenu
 					;;
 				*)
+					# Save the current directory to return to for after changing directory to executre the background script
 					cwd=$(pwd)
 					echo "Do you wish to 1) monitor memory or 2) monitor cpu? [enter memory or cpu]: "
                        			read monitor
+					# If statement which will execute code depending on the user entering cpu or memory to monitor
 		                        if [ $monitor == "cpu" ]
                         		then
-						echo ${monitor}
+						# Change diretory to where the background script is located
+						# Run the script in the background 
+						# Change back to the stored directory
+						# Display the second menu again
 						cd /root/ass2/
 						exec ./psscript.sh &
 						cd ${cwd}
 						secondMenu
                        			elif [ $monitor == "memory" ]
                        			then
+						# Same documentation for above if the user enters cpu
 						cd /root/ass2/
 						exec ./psscript.sh &
 						cd ${cwd}
 						secondMenu
 					else
+						# If the user enters something other than what is required
                	                		echo "Error please try again."
 						secondMenu
 					fi
@@ -221,6 +230,7 @@ function task6(){
                         secondMenu
 		elif [ $monitor == "memory" ]
 		then
+			# Same documentation for above if user enters cpu
                         cd /root/ass2/
                         exec ./psscript.sh &
                         cd ${cwd}
